@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-API_BASE_URL = os.environ.get("API_BASE_URL", "http://127.0.0.1:8000")
+API_BASE_URL = os.environ.get("API_BASE_URL", "http://127.0.0.1:8000").rstrip("/")
 
 # ==========================================
 # SESSION STATE INITIALISATION
@@ -457,7 +457,7 @@ with tab_upload:
 
                 try:
                     files = {"file": (uploaded_file.name, file_bytes, uploaded_file.type)}
-                    response = requests.post(f"{API_BASE_URL}/ingest", files=files)
+                    response = requests.post(f"{API_BASE_URL}/ingest", files=files, timeout=60)
 
                     progress_placeholder.info("⚡ **Step 4/4:** Normalizing schema & evaluating confidence scores...")
                     time.sleep(0.2)
