@@ -108,15 +108,4 @@ def extract_groq(b64_image: str, resized_b64: str | None = None) -> tuple[Invoic
     )
     return parsed_schema, usage
 
-    usage = {
-        "prompt_tokens": completion.usage.prompt_tokens if completion.usage else 0,
-        "completion_tokens": completion.usage.completion_tokens if completion.usage else 0,
-        "total_tokens": completion.usage.total_tokens if completion.usage else 0,
-    }
 
-    logger.info(
-        f"Groq vision extraction successful. Provider: groq, Model: {config.GROQ_MODEL}, "
-        f"MIME: {mime_type}, Prompt Tokens: {usage['prompt_tokens']}, "
-        f"Completion Tokens: {usage['completion_tokens']}, Total Tokens: {usage['total_tokens']}"
-    )
-    return parsed, usage

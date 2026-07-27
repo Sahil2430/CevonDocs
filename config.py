@@ -9,7 +9,7 @@ GEMINI_API_KEY       = os.environ.get("GEMINI_API_KEY", "")
 GROQ_API_KEY         = os.environ.get("GROQ_API_KEY", "")
 OPENAI_MODEL         = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
 GEMINI_MODEL         = os.environ.get("GEMINI_MODEL", "gemini-3.6-flash")
-GROQ_MODEL           = os.environ.get("GROQ_MODEL", "llama-3.2-11b-vision-preview")
+GROQ_MODEL           = os.environ.get("GROQ_MODEL", "qwen/qwen3.6-27b")
 MODERATION_PROVIDER  = os.environ.get("MODERATION_PROVIDER", "auto").lower()
 MODERATION_MODEL     = os.environ.get("MODERATION_MODEL", "omni-moderation-latest")
 
