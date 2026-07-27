@@ -666,6 +666,125 @@ with tab_upload:
                         st.markdown("##### 🛒 Extracted Line Items")
                         st.dataframe(pd.DataFrame(line_items), use_container_width=True)
 
+                    # ── Editable Post-Extraction Review & Approval Form ─────
+                    st.markdown("---")
+                    st.markdown('<div class="cevon-card">', unsafe_allow_html=True)
+                    st.markdown(
+                        '<div class="cevon-card-header">✏️ Review & Edit Extracted Fields</div>',
+                        unsafe_allow_html=True,
+                    )
+                    st.caption(
+                        "Pre-populated with AI-extracted values. Modify any field below before committing approval."
+                    )
+
+                    with st.form(key=f"tab1_review_form_{doc_id}"):
+                        f_col1, f_col2 = st.columns(2)
+                        with f_col1:
+                            edit_vendor = st.text_input(
+                                "Vendor Name",
+                                value=str(extracted.get("vendor") or ""),
+                                key=f"t1_vendor_{doc_id}",
+                            )
+                            edit_inv_num = st.text_input(
+                                "Invoice Number",
+                                value=str(extracted.get("invoice_number") or ""),
+                                key=f"t1_inv_{doc_id}",
+                            )
+                            edit_date = st.text_input(
+                                "Invoice Date (YYYY-MM-DD)",
+                                value=str(extracted.get("date") or ""),
+                                key=f"t1_date_{doc_id}",
+                            )
+                            edit_currency = st.text_input(
+                                "Currency Code",
+                                value=str(extracted.get("currency") or "USD"),
+                                key=f"t1_curr_{doc_id}",
+                            )
+
+                        with f_col2:
+                            edit_subtotal = st.number_input(
+                                "Subtotal",
+                                value=float(extracted.get("subtotal") or 0.0),
+                                format="%.2f",
+                                step=0.01,
+                                key=f"t1_subtotal_{doc_id}",
+                            )
+                            edit_tax = st.number_input(
+                                "Tax Amount",
+                                value=float(extracted.get("tax") or 0.0),
+                                format="%.2f",
+                                step=0.01,
+                                key=f"t1_tax_{doc_id}",
+                            )
+                            edit_total = st.number_input(
+                                "Total Amount",
+                                value=float(extracted.get("total") or 0.0),
+                                format="%.2f",
+                                step=0.01,
+                                key=f"t1_total_{doc_id}",
+                            )
+
+                        st.markdown("##### 🛒 Line Items Data Grid")
+                        raw_t1_items = extracted.get("line_items", [])
+                        df_t1 = pd.DataFrame(raw_t1_items) if raw_t1_items else pd.DataFrame(
+                            columns=["description", "quantity", "unit_price", "amount"]
+                        )
+                        for c_name in ["description", "quantity", "unit_price", "amount"]:
+                            if c_name not in df_t1.columns:
+                                df_t1[c_name] = None
+
+                        edited_t1_df = st.data_editor(
+                            df_t1,
+                            column_config={
+                                "description": st.column_config.TextColumn("Description"),
+                                "quantity":    st.column_config.NumberColumn("Quantity",   format="%.2f"),
+                                "unit_price":  st.column_config.NumberColumn("Unit Price", format="%.2f"),
+                                "amount":      st.column_config.NumberColumn("Amount",     format="%.2f"),
+                            },
+                            use_container_width=True,
+                            num_rows="dynamic",
+                            key=f"t1_items_editor_{doc_id}",
+                        )
+
+                        btn_label = "✅ Approve Document & Commit Records" if status != "approved" else "🔄 Re-Approve & Update Document"
+                        submit_tab1_approve = st.form_submit_button(
+                            btn_label,
+                            type="primary",
+                            use_container_width=True,
+                        )
+
+                        if submit_tab1_approve:
+                            reviewed_payload = dict(extracted)
+                            reviewed_payload["vendor"] = edit_vendor
+                            reviewed_payload["invoice_number"] = edit_inv_num
+                            reviewed_payload["date"] = edit_date
+                            reviewed_payload["currency"] = edit_currency
+                            reviewed_payload["subtotal"] = edit_subtotal
+                            reviewed_payload["tax"] = edit_tax
+                            reviewed_payload["total"] = edit_total
+                            reviewed_payload["line_items"] = edited_t1_df.to_dict(orient="records")
+
+                            try:
+                                app_res = requests.post(
+                                    f"{API_BASE_URL}/approve",
+                                    json={"document_id": doc_id, "reviewed_data": reviewed_payload},
+                                    timeout=10,
+                                )
+                                if app_res.status_code == 200:
+                                    st.success("✅ Document reviewed, updated, and committed successfully!")
+                                    st.cache_data.clear()
+                                    if "last_extraction" in st.session_state and st.session_state["last_extraction"]:
+                                        st.session_state["last_extraction"]["status"] = "approved"
+                                        st.session_state["last_extraction"]["extracted_data"] = reviewed_payload
+                                    time.sleep(0.5)
+                                    st.rerun()
+                                else:
+                                    st.error(f"Approval submission failed ({app_res.status_code}): {app_res.text}")
+                            except Exception as ex:
+                                st.error(f"Approval submission error: {ex}")
+
+                    st.markdown('</div>', unsafe_allow_html=True)
+
 
 # ==========================================
 # TAB 2: HUMAN REVIEW QUEUE
