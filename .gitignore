@@ -1,0 +1,34 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local configuration
+.env
+
+# Scratch and debug directories
+scratch/
+
+# Application uploads and SQLite DB
+uploads/*
+!uploads/.gitkeep
+data/*
+!data/.gitkeep
+*.db
+*.db-journal
+
+# Logs
+*.log
+
+# IDEs & System files
+.vscode/
+.idea/
+.DS_Store
+
+
