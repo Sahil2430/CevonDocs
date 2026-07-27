@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: cevondocs-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: AI_PROVIDER
+        value: groq
+      - key: MODERATION_PROVIDER
+        value: auto
+      - key: REVIEW_THRESHOLD
+        value: "0.75"
+      - key: DATABASE_PATH
+        value: data/cevondocs.db
+      - key: UPLOAD_DIR
+        value: uploads
