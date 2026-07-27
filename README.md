@@ -70,7 +70,7 @@ GitHub Repository:
 
 ## 4. Key Features
 
-- 🧠 **Multi-Provider Vision AI Engine**: Switch between **OpenAI** (`gpt-4o-mini`), **Google Gemini** (`gemini-2.0-flash`), and **Groq** (`llama-3.2-11b-vision-preview` / `qwen3.6-27b`) vision models via configuration.
+- 🧠 **Multi-Provider Vision AI Engine**: Switch between **OpenAI** (`gpt-4o-mini`), **Google Gemini** (`gemini-3.6-flash`), and **Groq** (`llama-3.2-11b-vision-preview` / `qwen3.6-27b`) vision models via configuration.
 - 📐 **Dynamic Pydantic Schema Prompting**: Embeds `InvoiceSchema.model_json_schema()` into system prompts to enforce valid JSON contracts.
 - 🔀 **Shared Output Normalization**: Standardizes model output aliases (`price` → `unit_price`), computes line item amounts, and enforces a non-fabrication policy.
 - 🛡️ **Fail-Closed Moderation Gate**: Safety screening gate (`auto`, `openai`, `gemini`, `local`). Unconfigured keys or API timeouts raise `ModerationUnavailableError` and force human review.
@@ -208,7 +208,7 @@ Access services at:
 | `OPENAI_API_KEY` | `""` | OpenAI API key for vision extraction & moderation |
 | `OPENAI_MODEL` | `gpt-4o-mini` | OpenAI Vision Model |
 | `GEMINI_API_KEY` | `""` | Google Gemini API key |
-| `GEMINI_MODEL` | `gemini-2.0-flash` | Gemini Vision Model |
+| `GEMINI_MODEL` | `gemini-3.6-flash` | Gemini Vision Model |
 | `GROQ_API_KEY` | `""` | Groq API key |
 | `GROQ_MODEL` | `qwen/qwen3.6-27b` | Groq Vision Model |
 | `MODERATION_PROVIDER`| `auto` | Moderation screening gate (`auto`, `openai`, `gemini`, `local`) |

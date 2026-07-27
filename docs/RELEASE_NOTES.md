@@ -7,7 +7,7 @@ We are thrilled to announce the official **v1.0.0 release of CevonDocs**, an ent
 ## 🌟 What's New in v1.0.0
 
 ### 🧠 Multi-Provider AI Vision Engine
-- Seamless support for **OpenAI** (`gpt-4o-mini`), **Google Gemini** (`gemini-2.0-flash`), and **Groq** (`llama-3.2-11b-vision-preview` / `qwen3.6-27b`).
+- Seamless support for **OpenAI** (`gpt-4o-mini`), **Google Gemini** (`gemini-3.6-flash`), and **Groq** (`llama-3.2-11b-vision-preview` / `qwen3.6-27b`).
 - Dynamic Pydantic schema prompting embedding `InvoiceSchema.model_json_schema()` directly into prompts.
 - Shared normalization layer (`normalizer.py`) mapping alias fields (`price` → `unit_price`), enforcing non-fabrication policies, and tracking source data provenance (`_provenance`).
 

@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v1.0.0] - 2026-07-27
 
 ### Added
-- **Multi-Provider AI Vision Extraction**: Integrated support for **OpenAI** (`gpt-4o-mini`), **Google Gemini** (`gemini-2.0-flash`), and **Groq** (`llama-3.2-11b-vision-preview` / `qwen3.6-27b`) vision models.
+- **Multi-Provider AI Vision Extraction**: Integrated support for **OpenAI** (`gpt-4o-mini`), **Google Gemini** (`gemini-3.6-flash`), and **Groq** (`llama-3.2-11b-vision-preview` / `qwen3.6-27b`) vision models.
 - **Dynamic Pydantic Schema Prompting**: Automatically injects `InvoiceSchema.model_json_schema()` into versioned system prompts (`backend/prompts/`) to guarantee structured JSON output.
 - **Shared Output Normalization (`backend/ai/normalizer.py`)**: Provider-agnostic normalization mapping model field aliases (`price` → `unit_price`), calculating line item amounts, and enforcing a non-fabrication policy.
 - **Rule-Based Validation & Recalibration Engine (`backend/validation.py`)**: Runs 10+ deterministic checks (financial totals verification, line item sums, required fields, ISO currencies, historical dates) to calibrate raw AI confidence scores.
